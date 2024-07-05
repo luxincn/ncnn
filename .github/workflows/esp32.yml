@@ -1,4 +1,4 @@
-name: windows-mingw
+name: esp32
 on:
   push:
     paths:
@@ -21,6 +21,7 @@ on:
     - 'src/layer/x86/**'
     - 'src/layer/vulkan/**'
     - 'tests/**'
+  workflow_dispatch:
 concurrency:
   group: esp32-${{ github.ref }}
   cancel-in-progress: true
