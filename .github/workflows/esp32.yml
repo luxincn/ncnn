@@ -75,22 +75,26 @@ jobs:
           git submodule update --init --recursive
           ./install.sh
 
-      - name: Set up ESP-IDF environment
+      # - name: Set up ESP-IDF environment
+      #   run: |
+      #     pwd
+      #     source esp-idf/export.sh
+      #     echo "IDF_PATH=$IDF_PATH" >> $GITHUB_ENV
+      #     echo "${IDF_PATH}/tools" >> $GITHUB_PATH
+      #     echo "${IDF_PATH}/components" >> $GITHUB_PATH
+          
+      # - name: Check IDF_PATH and PATH
+      #   run: |
+      #     echo "IDF_PATH is set to: $IDF_PATH"
+      #     echo "PATH is set to: $PATH"
+          
+      - name: Build NCNN for ESP32
         run: |
           pwd
           source esp-idf/export.sh
           echo "IDF_PATH=$IDF_PATH" >> $GITHUB_ENV
           echo "${IDF_PATH}/tools" >> $GITHUB_PATH
           echo "${IDF_PATH}/components" >> $GITHUB_PATH
-          
-      - name: Check IDF_PATH and PATH
-        run: |
-          echo "IDF_PATH is set to: $IDF_PATH"
-          echo "PATH is set to: $PATH"
-          
-      - name: Build NCNN for ESP32
-        run: |
-          pwd
           echo "IDF_PATH is set to: $IDF_PATH"
           mkdir -p build-esp32 && cd build-esp32
           cmake -DCMAKE_TOOLCHAIN_FILE="../toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release ..
