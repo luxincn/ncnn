@@ -48,16 +48,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ninja-build ccache
-      
-      - uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: 3.30.0
+          sudo apt-get install -y cmake ninja-build ccache
       
       - name: Install build-essential
-        run: |
-           cmake --version
-           sudo apt-get install -y build-essential
+        run: sudo apt-get install -y build-essential
 
       - name: Cache-ESP-IDF
         id: Cache-ESP-IDF
@@ -69,34 +63,18 @@ jobs:
       - name: Clone and Install ESP-IDF
         if: steps.Cache-ESP-IDF.outputs.cache-hit != 'true'
         run: |
-          pwd
           git clone https://github.com/espressif/esp-idf
           cd esp-idf
           git submodule update --init --recursive
           ./install.sh
-
-      # - name: Set up ESP-IDF environment
-      #   run: |
-      #     pwd
-      #     source esp-idf/export.sh
-      #     echo "IDF_PATH=$IDF_PATH" >> $GITHUB_ENV
-      #     echo "${IDF_PATH}/tools" >> $GITHUB_PATH
-      #     echo "${IDF_PATH}/components" >> $GITHUB_PATH
           
-      # - name: Check IDF_PATH and PATH
-      #   run: |
-      #     echo "IDF_PATH is set to: $IDF_PATH"
-      #     echo "PATH is set to: $PATH"
-          
-      - name: Build NCNN for ESP32
+      - name: Set environment and build NCNN for ESP32
         run: |
-          pwd
           source esp-idf/export.sh
           echo "IDF_PATH=$IDF_PATH" >> $GITHUB_ENV
           echo "${IDF_PATH}/tools" >> $GITHUB_PATH
           echo "${IDF_PATH}/components" >> $GITHUB_PATH
-          echo "IDF_PATH is set to: $IDF_PATH"
           mkdir -p build-esp32 && cd build-esp32
-          cmake -DCMAKE_TOOLCHAIN_FILE="../toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release ..
+          cmake -DCMAKE_TOOLCHAIN_FILE="../toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=OFF ..
           make -j4
           make install
