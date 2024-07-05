@@ -75,6 +75,6 @@ jobs:
           echo "${IDF_PATH}/tools" >> $GITHUB_PATH
           echo "${IDF_PATH}/components" >> $GITHUB_PATH
           mkdir -p build-esp32 && cd build-esp32
-          cmake -DCMAKE_TOOLCHAIN_FILE="../toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release -DNCNN_BUILD_EXAMPLES=OFF -DNCNN_BUILD_TESTS=OFF ..
+          cmake -DCMAKE_TOOLCHAIN_FILE="../toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release -DNCNN_BUILD_EXAMPLES=OFF ..
           make -j4
           make install
