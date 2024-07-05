@@ -1,7 +1,7 @@
-name: esp32
-
+name: ESP32
 on:
   push:
+    branches: [master]
     paths:
       - '.github/workflows/esp32.yml'
       - 'CMakeLists.txt'
@@ -47,13 +47,17 @@ jobs:
           python-version: '3.8'
 
       - name: Install dependencies
-        run: sudo apt-get install -y cmake ninja-build ccache
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build ccache
+      - name: Install build-essential
+        run: sudo apt-get install -y build-essential
 
       - name: Cache-ESP-IDF
         id: Cache-ESP-IDF
-        uses: actions/cache@v4
+        uses: actions/cache@v2
         with:
-          path: "esp-idf-install"
+          path: esp-idf-install
           key: esp-idf-${{ runner.os }}-install
 
       - name: Clone and Install ESP-IDF
@@ -87,6 +91,6 @@ jobs:
       - name: Build NCNN for ESP32
         run: |
           mkdir -p build-esp32 && cd build-esp32
-          cmake -DCMAKE_TOOLCHAIN_FILE="$env:GITHUB_WORKSPACE/ncnn/toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release ..
+          cmake -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/ncnn/toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release ..
           make -j4
           make install
