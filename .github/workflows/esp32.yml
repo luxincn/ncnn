@@ -79,6 +79,6 @@ jobs:
         run: |
           pwd
           mkdir -p build-esp32 && cd build-esp32
-          cmake -DCMAKE_TOOLCHAIN_FILE="ncnn/toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release ..
+          cmake -DCMAKE_TOOLCHAIN_FILE="../toolchains/esp32.toolchain.cmake" -DCMAKE_BUILD_TYPE=Release ..
           make -j4
           make install
