@@ -1,7 +1,6 @@
 name: ESP32
 on:
   push:
-    branches: [master]
     paths:
       - '.github/workflows/esp32.yml'
       - 'CMakeLists.txt'
