@@ -82,7 +82,12 @@ jobs:
           echo "IDF_PATH=$IDF_PATH" >> $GITHUB_ENV
           echo "${IDF_PATH}/tools" >> $GITHUB_PATH
           echo "${IDF_PATH}/components" >> $GITHUB_PATH
-
+          
+      - name: Check IDF_PATH and PATH
+        run: |
+          echo "IDF_PATH is set to: $IDF_PATH"
+          echo "PATH is set to: $PATH"
+          
       - name: Build NCNN for ESP32
         run: |
           pwd
