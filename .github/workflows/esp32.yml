@@ -7,9 +7,6 @@ on:
       - 'cmake/**'
       - 'src/*'
       - 'src/layer/*'
-      - 'src/layer/x86/**'
-      - 'src/layer/vulkan/**'
-      - 'tests/**'
   pull_request:
     branches: [master]
     paths:
@@ -18,9 +15,6 @@ on:
       - 'cmake/**'
       - 'src/*'
       - 'src/layer/*'
-      - 'src/layer/x86/**'
-      - 'src/layer/vulkan/**'
-      - 'tests/**'
   workflow_dispatch:
 
 concurrency:
@@ -53,17 +47,14 @@ jobs:
       - name: Install build-essential
         run: sudo apt-get install -y build-essential
 
-      - name: Cache-ESP-IDF
-        id: Cache-ESP-IDF
-        uses: actions/cache@v2
+      - name: Checkout ESP-IDF
+        uses: actions/checkout@v4
         with:
-          path: esp-idf-install
-          key: esp-idf-${{ runner.os }}-install
+          repository: espressif/esp-idf
+          ref: release/v5.2.2
 
-      - name: Clone and Install ESP-IDF
-        if: steps.Cache-ESP-IDF.outputs.cache-hit != 'true'
+      - name: Install ESP-IDF
         run: |
-          git clone https://github.com/espressif/esp-idf
           cd esp-idf
           git submodule update --init --recursive
           ./install.sh
